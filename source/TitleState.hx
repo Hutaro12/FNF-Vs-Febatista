@@ -540,11 +540,9 @@ class TitleState extends MusicBeatState {
 				case 16:
 					addMoreText('Funkin');
 				case 17:
-					addMoreText('SB');
-				case 18:
-					addMoreText('Engine');
+					addMoreText('Vs Febatista');
 
-				case 19:
+				case 18:
 					skipIntro();
 			}
 		}
