@@ -233,13 +233,6 @@ class TitleState extends MusicBeatState {
 		add(gfDance);
 		gfDance.shader = swagShader.shader;
 
-		gradientBar = FlxGradient.createGradientFlxSprite(Math.round(FlxG.width), 512, [0x00060A4D, 0xFF800080], 2, true);
-		gradientBar.y = FlxG.height - gradientBar.height;
-		gradientBar.scale.y = 0;
-		gradientBar.updateHitbox();
-		add(gradientBar);
-		FlxTween.tween(gradientBar, {'scale.y': 1.3}, 8, {ease: FlxEase.quadInOut});
-
 		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
 		#if (desktop || android && MODS_ALLOWED)
 		var path = SUtil.getPath() + "mods/" + Paths.currentModDirectory + "/images/titleEnter.png";
@@ -514,11 +507,11 @@ class TitleState extends MusicBeatState {
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:
-					createCoolText(['SB Engine by'], 15);
+					createCoolText(['Vs Febatista by'], 15);
 				case 4:
-					addMoreText('Stefan2008', 15);
-					addMoreText('MaysLastPlay', 15);
-					addMoreText('Fearester', 15);
+					addMoreText('Hutaro', 15);
+					addMoreText('AdryanGamer', 15);
+					addMoreText('Evidial', 15);
 				case 5:
 					deleteCoolText();
 				case 6:
@@ -540,9 +533,11 @@ class TitleState extends MusicBeatState {
 				case 16:
 					addMoreText('Funkin');
 				case 17:
-					addMoreText('Vs Febatista');
-
+					addMoreText('Vs');
 				case 18:
+					addMoreText('Febatista');
+					
+				case 19:
 					skipIntro();
 			}
 		}
@@ -568,10 +563,6 @@ class TitleState extends MusicBeatState {
 						FlxTween.angle(logoBl, logoBl.angle, -4, 4, {ease: FlxEase.quartInOut});
 				}, 0);
 				FlxG.camera.flash(FlxColor.WHITE, 3);
-				{
-					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-					FlxG.sound.music.fadeIn(4, 0, 0.7);
-					transitioning = false;
 				};
 			}
 			playJingle = false;
