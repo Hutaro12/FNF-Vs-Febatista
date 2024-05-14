@@ -29,43 +29,25 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
-          sudo apt-get install libvlc-dev
-          sudo apt-get install libvlccore-dev
           haxelib setup ~/haxelib
-          haxelib install hxcpp 4.2.1 > /dev/null
-          haxelib install lime 8.0.2
-          haxelib install openfl 9.2.1
-          haxelib install flixel
-          haxelib run lime setup flixel
-          haxelib run lime setup
-          haxelib install flixel-addons
-          haxelib install flixel-ui
-          haxelib install tjson
-          haxelib install hxjsonast
-          haxelib install hxCodec 2.5.1
-          haxelib install hscript
-          haxelib install SScript 8.1.6
-          haxelib install hxcpp-debug-server
-          haxelib git linc_luajit https://github.com/superpowers04/linc_luajit
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+          haxelib --global update haxelib
+          haxelib install hxcpp > /dev/null
+          haxelib install hmm --quiet
+          haxelib run hmm install
+      - name: Configure Mac
+        run: |
+          haxelib run lime setup -alias -y
+          haxelib set lime 8.0.2
+          haxelib set SScript 8.1.6
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
-      - name: Setup Lime
-        run: |
-          haxelib run lime setup -alias -y
-          haxelib set hxcpp 4.2.1
-          haxelib set lime 8.0.2
-          haxelib set openfl 9.2.1
-          haxelib set SScript 8.1.6
-          haxelib list
       - name: Building
-        run: haxelib run lime build linux -${{ matrix.arch }}
+        run: haxelib run lime build macos
+        
         env:
           cert_pass: nullfunni
           cert_alias_pass: nullfunni
-
 
       - name: Clear Previous Cache
         uses: actions/github-script@main
