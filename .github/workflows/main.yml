@@ -27,7 +27,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.3
+          haxe-version: 4.2.5
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
@@ -118,7 +118,7 @@ jobs:
         with:
           name: SB Engine Windows Build
           path: export/release/windows/bin
-  buildMac:
+  BuildMac:
     runs-on: macos-latest
 
     steps:
@@ -127,34 +127,45 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.3
+          haxe-version: 4.2.5
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          haxe -cp ./setup -D analyzer-optimize -main Main --interp
-      - name: Skip SScript setup mode
-        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+          haxelib install hxcpp > /dev/null
+          haxelib install lime 7.9.0
+          haxelib install openfl 9.1.0
+          haxelib --never install flixel 4.11.0
+          haxelib run lime setup flixel
+          haxelib run lime setup
+          haxelib install flixel-tools
+          haxelib install flixel-ui
+          haxelib install flixel-addons 2.11.0
+          haxelib install tjson
+          haxelib install hxjsonast
+          haxelib install hxCodec 2.5.1
+          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
+          haxelib install hscript
+          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
+          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+          haxelib install hxcpp-debug-server
+          haxelib list
+      - name: Setup Lime
+        run: |
+          haxelib run lime setup -alias -y
+          haxelib set lime 7.9.0
+          haxelib set openfl 9.1.0
+          haxelib set flixel 4.11.0
+          haxelib set flixel-addons 2.11.0
+          haxelib set hxCodec 2.5.1
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
-        run: haxelib run lime build mac       
-        
-      - name: Save Current Cache
-        id: cache-release-build-macos-save
-        uses: actions/cache/save@main
-        with:
-          path: |
-            ~/haxelib
-            ~/.gradle
-            export/release/macos/haxe
-            export/release/macos/obj
-          key: cache-macos-build
+        run: haxelib run lime build mac --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: sbEngineMacOSBuild
+          name: SB Engine Mac Build
           path: export/release/macos/bin
   BuildAndroid:
     name: BuildAndroid
@@ -227,4 +238,4 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: SB Engine Android Build
-          path: export/release/android/bin/app/build/outputs/apk/debug
+          path: export/release/android/bin/app/build/outputs/apk/debug          path: export/release/android/bin/app/build/outputs/apk/debug
